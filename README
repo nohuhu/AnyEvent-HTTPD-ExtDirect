@@ -1,0 +1,35 @@
+AnyEvent::HTTPD::ExtDirect
+==========================
+
+This module implements RPC::ExtDirect gateway for AnyEvent::HTTPD environment.
+
+RPC::ExtDirect is an implementation of Ext.Direct remoting protocol used with
+Ext JS JavaScript framework (but not only, see RPC::ExtDirect::Client).
+
+For more information, see RPC::ExtDirect documentation
+
+INSTALLATION
+
+To install this module type the following:
+
+    perl Makefile.PL
+    make
+    make test
+    make install
+
+DEPENDENCIES
+
+This module requires these other modules and libraries:
+
+    AnyEvent::HTTPD
+    RPC::ExtDirect
+    JSON
+    Attribute::Handlers
+
+COPYRIGHT AND LICENSE
+
+Copyright (c) 2013 by Alexander Tokarev, <tokarev@cpan.org>
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself. See perlartistic.
+
