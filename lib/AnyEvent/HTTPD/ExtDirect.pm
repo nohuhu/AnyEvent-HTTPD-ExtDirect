@@ -4,6 +4,7 @@ use parent 'AnyEvent::HTTPD';
 
 use common::sense;
 
+use Carp;
 use IO::File;
 use File::Temp;
 use File::Basename;
@@ -21,7 +22,7 @@ use RPC::ExtDirect::EventProvider;
 # This module is not compatible with RPC::ExtDirect < 3.0
 #
 
-die "AnyEvent::HTTPD::ExtDirect requires RPC::ExtDirect 3.0+"
+croak __PACKAGE__." requires RPC::ExtDirect 3.0+"
     if $RPC::ExtDirect::VERSION < 3.0;
 
 ### PACKAGE GLOBAL VARIABLE ###
@@ -29,7 +30,7 @@ die "AnyEvent::HTTPD::ExtDirect requires RPC::ExtDirect 3.0+"
 # Version of the module
 #
 
-our $VERSION = '0.01';
+our $VERSION = '0.01_01';
 
 ### PUBLIC CLASS METHOD (CONSTRUCTOR) ###
 #
@@ -39,8 +40,8 @@ our $VERSION = '0.01';
 sub new {
     my ($class, %params) = @_;
     
-    my $config = delete $params{config} || RPC::ExtDirect::Config->new();
     my $api    = delete $params{api}    || RPC::ExtDirect->get_api();
+    my $config = delete $params{config} || $api->config;
     
     $config->add_accessors(
         overwrite => 1,
@@ -53,19 +54,19 @@ sub new {
         }],
     );
     
-    my $r_class = delete $params{router_class};
-    my $e_class  = delete $params{eventprovider_class};
-    
-    $config->router_class_anyevent($r_class)        if $r_class;
-    $config->eventprovider_class_anyevent($e_class) if $e_class;
+    for my $var ( qw/ router_class eventprovider_class / ) {
+        my $method = "${var}_anyevent";
+        
+        $config->$method( delete $params{$var} ) if exists $params{$var};
+    }
     
     # AnyEvent::HTTPD wants IP address
     $params{host} = '127.0.0.1' if $params{host} =~ /localhost/io;
 
     my $self = $class->SUPER::new(%params);
     
-    $self->{config} = $config;
-    $self->{api}    = $api;
+    $self->config($config);
+    $self->api($api);
 
     return $self;
 }
@@ -78,7 +79,7 @@ sub new {
 sub run {
     my ($self) = @_;
     
-    my $config      = $self->config;
+    my $config = $self->config;
     
     $self->_set_callbacks(
         api_path    => $config->api_path,

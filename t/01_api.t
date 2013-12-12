@@ -6,6 +6,8 @@ use AnyEvent::HTTPD::Util;
 use HTTP::Response;
 use JSON;
 
+use RPC::ExtDirect::Test::Util;
+
 use RPC::ExtDirect::Config;
 
 use Test::More tests => 13;
@@ -46,6 +48,14 @@ for my $test ( @$tests ) {
     my $content_type     = $test->{content_type};
     my $expected_content = $test->{expected_content};
 
+    if ( defined $plack_input ) {
+        my %input = @$plack_input;
+
+        while ( my ($key, $value) = each %input ) {
+            $config->$key($value);
+        }
+    }
+
     $server->_set_callbacks(
         api_path    => $test->{api_path},
         router_path => $test->{router_path},
@@ -74,22 +84,6 @@ for my $test ( @$tests ) {
     is_deeply $actual_data,, $expected_data, "$name content"
         or diag explain $actual_data;
 };
-
-sub deparse_api {
-    my ($api_str) = @_;
-
-    my @parts = split $api_str, /;\s*/;
-
-    for my $part ( @parts ) {
-        next unless $part =~ /={/;
-
-        my ($var, $json) = split /=/, $part;
-
-        $part = { $var => JSON::from_json($json) };
-    }
-
-    return [ @parts ];
-}
 
 sub GET_str {
     my ($test, $port) = @_;
