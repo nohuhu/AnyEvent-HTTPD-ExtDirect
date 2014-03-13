@@ -80,8 +80,8 @@ sub run {
     my ($self) = @_;
     
     my $config = $self->config;
-    
-    $self->_set_callbacks(
+
+    $self->set_callbacks(
         api_path    => $config->api_path,
         router_path => $config->router_path,
         poll_path   => $config->poll_path,
@@ -90,42 +90,12 @@ sub run {
     $self->SUPER::run();
 }
 
-### PUBLIC INSTANCE METHODS ###
-#
-# Read-write accessors.
-#
-
-RPC::ExtDirect::Util::Accessor::mk_accessors(
-    simple => [qw/ api config /],
-);
-
-############## PRIVATE METHODS BELOW ##############
-
-### PRIVATE INSTANCE METHOD ###
-#
-# Register the callbacks for Ext.Direct handlers
-#
-
-sub _set_callbacks {
-    my ($self, %params) = @_;
-    
-    my $api_path    = $params{api_path};
-    my $router_path = $params{router_path};
-    my $poll_path   = $params{poll_path};
-    
-    $self->reg_cb(
-        $api_path    => \&_handle_api,
-        $router_path => \&_handle_router,
-        $poll_path   => \&_handle_events,
-    );
-}
-
-### PRIVATE INSTANCE METHOD ###
+### PUBLIC INSTANCE METHOD ###
 #
 # Handle Ext.Direct API calls
 #
 
-sub _handle_api {
+sub handle_api {
     my ($self, $req) = @_;
 
     # Get the API JavaScript chunk
@@ -152,12 +122,12 @@ sub _handle_api {
     $self->stop_request;
 }
 
-### PRIVATE INSTANCE METHOD ###
+### PUBLIC INSTANCE METHOD ###
 #
 # Handle Ext.Direct method requests
 #
 
-sub _handle_router {
+sub handle_router {
     my ($self, $req) = @_;
     
     if ( $req->method ne 'POST' ) {
@@ -211,12 +181,12 @@ sub _handle_router {
     $self->stop_request;
 }
 
-### PRIVATE INSTANCE METHOD ###
+### PUBLIC INSTANCE METHOD ###
 #
 # Polls Event handlers for events, returning serialized stream
 #
 
-sub _handle_events {
+sub handle_events {
     my ($self, $req) = @_;
     
     # Only GET and POST methods are supported for polling
@@ -261,6 +231,40 @@ sub _handle_events {
     
     $self->stop_request;
 }
+
+### PUBLIC INSTANCE METHOD ###
+#
+# Register the callbacks for Ext.Direct handlers.
+# This effectively "primes" the server but does not make it
+# enter a blocking wait.
+#
+
+sub set_callbacks {
+    my ($self, %params) = @_;
+
+    my $config = $self->config;
+    
+    my $api_path    = $params{api_path}    || $config->api_path;
+    my $router_path = $params{router_path} || $config->router_path;
+    my $poll_path   = $params{poll_path}   || $config->poll_path;
+     
+    $self->reg_cb(
+        $api_path    => $self->can('handle_api'),
+        $router_path => $self->can('handle_router'),
+        $poll_path   => $self->can('handle_events'),
+    );
+}
+
+### PUBLIC INSTANCE METHODS ###
+#
+# Read-write accessors.
+#
+
+RPC::ExtDirect::Util::Accessor::mk_accessors(
+    simple => [qw/ api config /],
+);
+
+############## PRIVATE METHODS BELOW ##############
 
 ### PRIVATE INSTANCE METHOD ###
 #
