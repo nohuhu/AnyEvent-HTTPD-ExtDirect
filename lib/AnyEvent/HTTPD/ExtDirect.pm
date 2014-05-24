@@ -15,22 +15,20 @@ use RPC::ExtDirect::Util::Accessor;
 use RPC::ExtDirect::Config;
 use RPC::ExtDirect::API;
 use RPC::ExtDirect;
-use RPC::ExtDirect::Router;
-use RPC::ExtDirect::EventProvider;
 
 #
 # This module is not compatible with RPC::ExtDirect < 3.0
 #
 
 croak __PACKAGE__." requires RPC::ExtDirect 3.0+"
-    if $RPC::ExtDirect::VERSION < 3.0;
+    if $RPC::ExtDirect::VERSION lt '3.0';
 
 ### PACKAGE GLOBAL VARIABLE ###
 #
 # Version of the module
 #
 
-our $VERSION = '0.01_01';
+our $VERSION = '3.00';
 
 ### PUBLIC CLASS METHOD (CONSTRUCTOR) ###
 #
@@ -38,10 +36,14 @@ our $VERSION = '0.01_01';
 #
 
 sub new {
-    my ($class, %params) = @_;
+    my $class = shift;
     
-    my $api    = delete $params{api}    || RPC::ExtDirect->get_api();
-    my $config = delete $params{config} || $api->config;
+    my %arg = @_ == 1 && 'HASH' eq ref $_[0] ? %{ $_[0] }
+            :                                  @_
+            ;
+    
+    my $api    = delete $arg{api}    || RPC::ExtDirect->get_api();
+    my $config = delete $arg{config} || $api->config;
     
     $config->add_accessors(
         overwrite => 1,
@@ -57,13 +59,13 @@ sub new {
     for my $var ( qw/ router_class eventprovider_class / ) {
         my $method = "${var}_anyevent";
         
-        $config->$method( delete $params{$var} ) if exists $params{$var};
+        $config->$method( delete $arg{$var} ) if exists $arg{$var};
     }
     
-    # AnyEvent::HTTPD wants IP address
-    $params{host} = '127.0.0.1' if $params{host} =~ /localhost/io;
+    # AnyEvent::HTTPD wants only IP addresses
+    $arg{host} = '127.0.0.1' if $arg{host} =~ /localhost/io;
 
-    my $self = $class->SUPER::new(%params);
+    my $self = $class->SUPER::new(%arg);
     
     $self->config($config);
     $self->api($api);
@@ -170,7 +172,7 @@ sub handle_router {
 
     # Router result is Plack-compatible arrayref; there's not much
     # difference in what AnyEvent::HTTPD expects so we just convert it
-    # directly
+    # in place
     $req->respond([
         200,
         'OK',
@@ -240,13 +242,13 @@ sub handle_events {
 #
 
 sub set_callbacks {
-    my ($self, %params) = @_;
+    my ($self, %arg) = @_;
 
     my $config = $self->config;
     
-    my $api_path    = $params{api_path}    || $config->api_path;
-    my $router_path = $params{router_path} || $config->router_path;
-    my $poll_path   = $params{poll_path}   || $config->poll_path;
+    my $api_path    = $arg{api_path}    || $config->api_path;
+    my $router_path = $arg{router_path} || $config->router_path;
+    my $poll_path   = $arg{poll_path}   || $config->poll_path;
      
     $self->reg_cb(
         $api_path    => $self->can('handle_api'),
@@ -272,7 +274,7 @@ RPC::ExtDirect::Util::Accessor::mk_accessors(
 # feed to Router (string or hashref, really). Or undef if something
 # goes too wrong to recover.
 #
-# This code is mostly copied from the Plack interface and adapted
+# This code was mostly copied from the Plack gateway and adapted
 # for AnyEvent::HTTPD.
 #
 
