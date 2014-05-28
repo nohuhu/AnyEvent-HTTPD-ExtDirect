@@ -11,7 +11,7 @@ DESCRIPTION
     combined into one package.
 
     That said, the asynchronous event based nature of AnyEvent::HTTPD allows
-    using it both as standalone application server, and as a part of a
+    using it both as a standalone application server, and as a part of a
     larger program that may do other things besides serving Ext.Direct or
     plain HTTP requests. See "Non-blocking server" below.
 
@@ -26,28 +26,10 @@ INSTALLATION
         make && make test
         make install
 
-EXAMPLES
-
-    See included Ext JS examples for ideas on what Ext.Direct is and how to
-    use it in an event based application server. The examples are not
-    installed along with the AnyEvent::HTTPD::ExtDirect module, and are only
-    available in the `examples/' directory of the CPAN distribution.
-
-    To run examples type the following in the AnyEvent::HTTPD::ExtDirect
-    tarball directory:
-
-        cd examples
-        perl server
-
 COPYRIGHT AND LICENSE
 
     Copyright (c) 2013-2014 Alex Tokarev.
 
     This module is free software; you can redistribute it and/or modify it
     under the same terms as Perl itself. See perlartistic.
-
-    Included Ext JS examples are copyright (c) 2011, Sencha Inc. Example
-    code is used and distributed under GPL 3.0 license as provided by Sencha
-    Inc. See http://www.sencha.com/license. Ext JS is available for download
-    at http://www.sencha.com/products/extjs/
 

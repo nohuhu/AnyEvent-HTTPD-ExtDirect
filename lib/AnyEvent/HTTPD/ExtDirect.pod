@@ -268,21 +268,6 @@ To install this module type the following:
 
 =end readme
 
-=for readme continue
-
-=head1 EXAMPLES
-
-See included Ext JS examples for ideas on what Ext.Direct is and how to
-use it in an event based application server. The examples are not
-installed along with the AnyEvent::HTTPD::ExtDirect module, and are only
-available in the C<examples/> directory of the CPAN distribution.
-
-To run examples type the following in the AnyEvent::HTTPD::ExtDirect
-tarball directory:
-
-    cd examples
-    perl server
-
 =for readme stop
 
 =head1 ACKNOWLEDGEMENTS
@@ -311,10 +296,5 @@ Copyright (c) 2013-2014 Alex Tokarev.
 
 This module is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself. See L<perlartistic>.
-
-Included Ext JS examples are copyright (c) 2011, Sencha Inc. Example code
-is used and distributed under GPL 3.0 license as provided by Sencha Inc.
-See L<http://www.sencha.com/license>. Ext JS is available for download at
-L<http://www.sencha.com/products/extjs/>
 
 =cut
