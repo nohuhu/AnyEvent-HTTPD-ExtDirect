@@ -1,0 +1,4 @@
+3.00    Tue May 27 21:52:08 2014
+    - Initial version released. Version set to 3.00 to reflect that
+      this gateway requires RPC::ExtDirect 3.0+
+
