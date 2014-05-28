@@ -32,9 +32,9 @@ AnyEvent::HTTPD::ExtDirect - RPC::ExtDirect gateway for AnyEvent::HTTPD
     
     $httpd->run;
 
-=for readme continue
-
 =head1 DESCRIPTION
+
+=for readme continue
 
 This module provides an L<RPC::ExtDirect> gateway implementation for
 L<AnyEvent::HTTPD>, a simple lightweight event based web server.
