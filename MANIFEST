@@ -1,8 +1,9 @@
 Changes
-Makefile.PL
-README
 lib/AnyEvent/HTTPD/ExtDirect.pm
 lib/AnyEvent/HTTPD/ExtDirect.pod
+Makefile.PL
+MANIFEST
+README
 t/01_api.t
 t/02_router.t
 t/03_poll.t
@@ -11,6 +12,6 @@ t/data/cgi-data/bar.png
 t/data/cgi-data/foo.jpg
 t/data/cgi-data/qux.txt
 t/data/cgi-data/script.js
-t/lib/server.pl
 t/lib/RPC/ExtDirect/Test/Util/AnyEvent.pm
+t/lib/server.pl
 t/pod.t
