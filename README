@@ -26,7 +26,7 @@ INSTALLATION
 
 COPYRIGHT AND LICENSE
 
-    Copyright (c) 2013-2014 Alex Tokarev.
+    Copyright (c) 2013-2014 Alex Tokarev <tokarev@cpan.org>.
 
     This module is free software; you can redistribute it and/or modify it
     under the same terms as Perl itself. See perlartistic.

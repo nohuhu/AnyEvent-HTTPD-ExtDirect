@@ -1,3 +1,9 @@
+3.01  Mon Jun 16 20:05:48 2014
+    - Added HTTP::Request to the dependency list. I assumed that it
+      was required by AnyEvent::HTTPD but judging by the failure
+      reports from CPAN testers it is not so.
+    - Assorted tiny doc and misc touch-ups.
+
 3.00  Thu Jun 12 19:41:35 2014
     - Initial version released. Version set to 3.00 to reflect that
       this gateway requires RPC::ExtDirect 3.0+, and for consistency

@@ -31,10 +31,12 @@ WriteMakefile(
     PREREQ_PM => {
         'AnyEvent::HTTPD' => '0.93',
         'RPC::ExtDirect'  => '3.0',
+        'HTTP::Request'   => 0,
     },
     ABSTRACT => 'RPC::ExtDirect gateway for AnyEvent::HTTPD',
     AUTHOR => 'Alex Tokarev <tokarev@cpan.org>',
     LICENSE => 'perl',
+    MIN_PERL_VERSION => 5.008000,
     META_MERGE => {
         resources => {
             bugtracker => 'http://github.com/nohuhu/AnyEvent-HTTPD-ExtDirect/issues',
