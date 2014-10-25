@@ -225,7 +225,7 @@ sub handle_events {
         200,
         'OK',
         {
-            'Content-Type'   => 'application/json; charset=utf8',
+            'Content-Type'   => 'application/json; charset=utf-8',
             'Content-Length' => $content_length,
         },
         $http_body,
