@@ -92,7 +92,12 @@ sub run_tests {
         
         my $req_str = $req->as_string("\r\n");
 
-        my $cv = AnyEvent::HTTPD::Util::test_connect($host, $port, $req_str);
+        my $actual_host = $server->host;
+        my $actual_port = $server->port;
+
+        my $cv = AnyEvent::HTTPD::Util::test_connect(
+            $actual_host, $actual_port, $req_str
+        );
     
         my $http_resp_str = $cv->recv;
         my $res = HTTP::Response->parse($http_resp_str);

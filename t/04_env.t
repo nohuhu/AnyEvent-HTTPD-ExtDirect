@@ -10,7 +10,7 @@ use RPC::ExtDirect::Test::Data::Env;
 
 use AnyEvent::HTTPD::ExtDirect;
 
-my ($host, $port) = ('127.0.0.1', 19000 + int rand 100);
+my ($host, $port) = ('127.0.0.1', 0);
 GetOptions('host=s' => \$host, 'port=i' => \$port);
 
 my $tests = RPC::ExtDirect::Test::Data::Env::get_tests;
