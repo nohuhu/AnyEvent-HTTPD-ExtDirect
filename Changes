@@ -1,3 +1,8 @@
+3.20  Tue Mar 31 23:05:03 PDT 2015
+    - Updated to support call metadata feature in RPC::ExtDirect 3.20
+    - Added unit tests
+    - RPC::ExtDirect dependency bumped to 3.20
+
 3.02  Fri Oct 24 21:29:45 PDT 2014
     - Fixed a charset issue that caused grief to IE8 users
     - Improved test suite robustness
